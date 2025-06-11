@@ -1,0 +1,15 @@
+location
+mandatory coverages by government
+disaster history
+
+
+
+User Input (Name + Address) 
+    ↓
+Address Geocoding & Feature Extraction
+    ↓
+Risk Assessment & Historical Analysis
+    ↓
+ML Models (Coverage + Premium)
+    ↓
+Quote Generation & Recommendation
