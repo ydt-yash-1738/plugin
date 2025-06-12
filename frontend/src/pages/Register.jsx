@@ -6,6 +6,9 @@ const Register = () => {
   const [form, setForm] = useState({ firstName: '', lastName: '', email: '', password: '', confirmPassword: '' });
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
+  localStorage.setItem('firstName', firstName);
+  localStorage.setItem('lastName', lastName);
+  localStorage.setItem('email', email);
 
   const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
   const handleSubmit = async e => {
