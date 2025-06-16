@@ -3,6 +3,10 @@ import { AuthContext } from '../context/AuthContext';
 
 const Navbar = () => {
   const { auth, logout } = useContext(AuthContext);
+  const handleLogout = () => {
+    logout();
+    localStorage.clear();
+  }
   return (
     <nav className="bg-black/90 backdrop-blur-xl border-b border-gray-800 text-white p-6 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
@@ -15,7 +19,7 @@ const Navbar = () => {
 
         {auth && (
           <button
-            onClick={logout}
+            onClick={handleLogout}
             className="bg-white/10 hover:bg-white/20 text-white px-6 py-2 rounded-xl border border-gray-700 hover:border-gray-600 transition-all duration-300 backdrop-blur-sm"
           >
             Sign Out

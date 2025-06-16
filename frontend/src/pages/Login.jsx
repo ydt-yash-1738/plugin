@@ -26,7 +26,7 @@ const Login = () => {
         <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-gray-700 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-1000"></div>
         <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-gray-900 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-2000"></div>
       </div>
-      <div className="relative z-10 backdrop-blur-xl bg-black/40 border border-gray-800 rounded-2xl p-8 w-full max-w-md mx-4 shadow-2xl">
+      <div className="relative z-10 backdrop-blur-xl bg-black/40 border border-gray-800 rounded-2xl p-8 w-full max-w-md mx-2 shadow-2xl">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold text-white mb-2">Welcome Back</h2>
