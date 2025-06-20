@@ -4,7 +4,9 @@ import PrivateRoute from './utils/PrivateRoute';
 import Navbar from './components/Navbar';
 import Register from './pages/Register';
 import Login from './pages/Login';
-import Assistant from './pages/Assistant';
+import QuickQuote from './pages/QuickQuote';
+import QuickQuoteDisplay from './pages/QuickQuoteDisplay';
+import PreQuote from './pages/PreQuote';
 
 const App = () => (
   <AuthProvider>
@@ -14,7 +16,9 @@ const App = () => (
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/assistant" element={<PrivateRoute><Assistant /></PrivateRoute>} />
+        <Route path="/quickquote" element={<PrivateRoute><QuickQuote /></PrivateRoute>} />
+        <Route path="/quickquotedisplay" element={<PrivateRoute><QuickQuoteDisplay /></PrivateRoute>} />
+        <Route path="/prequote" element={<PrivateRoute><PreQuote /></PrivateRoute>} />
       </Routes>
     </BrowserRouter>
   </AuthProvider>

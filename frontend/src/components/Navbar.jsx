@@ -8,13 +8,13 @@ const Navbar = () => {
     localStorage.clear();
   }
   return (
-    <nav className="bg-black/90 backdrop-blur-xl border-b border-gray-800 text-white p-6 sticky top-0 z-50">
+    <nav className="bg-gradient-to-r from-gray-950 via-black to-gray-900/90 backdrop-blur-xl border-b border-gray-800 text-white p-6 sticky top-0 z-50 shadow-md">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <div className="flex items-center space-x-2">
           <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
             <span className="text-black font-bold text-sm">🏠</span>
           </div>
-          <span className="text-2xl font-bold">House Insurance Assistant</span>
+          <span className="text-2xl font-bold">House Policy Mandi</span>
         </div>
 
         {auth && (
