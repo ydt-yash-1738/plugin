@@ -52,7 +52,7 @@ const QuickQuote = () => {
 
     const fetchWeatherData = async (location) => {
         try {
-            const res = await fetch(`https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${encodeURIComponent(location)}&aqi=no`);
+            const res = await fetch(`http://localhost:5000/weather?location=${encodeURIComponent(location)}`);
             const data = await res.json();
             if (res.ok) return data;
             throw new Error(data.error?.message || 'Weather API error');
