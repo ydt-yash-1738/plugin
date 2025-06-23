@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import QuickQuote from './pages/QuickQuote';
 import QuickQuoteDisplay from './pages/QuickQuoteDisplay';
 import PreQuote from './pages/PreQuote';
+import QuoteDisplay from './pages/QuoteDisplay';
 
 const App = () => (
   <AuthProvider>
@@ -19,6 +20,7 @@ const App = () => (
         <Route path="/quickquote" element={<PrivateRoute><QuickQuote /></PrivateRoute>} />
         <Route path="/quickquotedisplay" element={<PrivateRoute><QuickQuoteDisplay /></PrivateRoute>} />
         <Route path="/prequote" element={<PrivateRoute><PreQuote /></PrivateRoute>} />
+        <Route path="/quotedisplay" element={<PrivateRoute><QuoteDisplay /></PrivateRoute>} />
       </Routes>
     </BrowserRouter>
   </AuthProvider>
