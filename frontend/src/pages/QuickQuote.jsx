@@ -231,11 +231,17 @@ const QuickQuote = () => {
                 weatherData: weather,
                 disasterInfo: disasters,
                 createdAt: new Date().toISOString(),
-                selectedPlan: null 
             };
 
             // Store the quote data in localStorage
             localStorage.setItem('quickQuoteData', JSON.stringify(quickQuoteData));
+            // sending sqft to spreadsheet
+            // await fetch('http://localhost:5000/api/sqft', {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify({ sqFt: form.sqFt, address: form.address }),
+            // });
+
 
             navigate('/quickquotedisplay', {
                 state: {
