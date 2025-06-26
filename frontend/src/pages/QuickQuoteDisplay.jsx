@@ -1460,8 +1460,7 @@ const QuickQuoteDisplay = () => {
 
   if (!form || !weatherData || !disasterInfo) {
     return (
-      <div className={`min-h-screen flex items-center justify-center text-xl ${isDarkMode ? 'bg-black text-white' : 'bg-white text-gray-900'
-        }`}>
+      <div className={`min-h-screen flex items-center justify-center text-xl bg-black text-white`}>
         <AlertTriangle className="w-6 h-6 mr-2 text-red-500" />
         Missing quote data. Please start again.
       </div>
@@ -1501,49 +1500,6 @@ const QuickQuoteDisplay = () => {
     const newSelection = selectedDisasterCoverages.filter(c => c !== coverage);
     setSelectedDisasterCoverages(newSelection);
   };
-
-  const calculatePremium = () => {
-    const sqFt = Number(form.sqFt);
-    const baseRate = 0.5;
-    const basePremium = sqFt * baseRate;
-    const disasterMultiplier = 1 + (disasterInfo?.disasters?.length || 0) * 0.05;
-    const disasterCoverageMultiplier = 1 + (selectedDisasterCoverages.length * 0.03);
-
-    return (basePremium * disasterMultiplier * disasterCoverageMultiplier).toFixed(2);
-  };
-
-  // const sendToBackend = async () => {
-  //   try {
-  //     const quickQuoteRaw = localStorage.getItem("quickQuoteData");
-  //     const coveragesRaw = localStorage.getItem("selectedInsuranceCoverages");
-
-  //     const quickQuoteData = JSON.parse(quickQuoteRaw);
-  //     const coveragesData = JSON.parse(coveragesRaw);
-
-  //     const address = quickQuoteData?.address;
-  //     const sqFt = quickQuoteData?.sqFt;
-  //     const mandatoryCoverages = coveragesData?.mandatoryCoverages;
-  //     const disasterCoverages = coveragesData?.disasterCoverages;
-
-  //     console.table({ address, sqFt, mandatoryCoverages,  disasterCoverages});
-
-  //     if (!address || !sqFt || !Array.isArray(mandatoryCoverages) || !Array.isArray(disasterCoverages)) {
-  //       console.error("❌ Missing required data", { address, sqFt, mandatoryCoverages,  disasterCoverages});
-  //       return;
-  //     }
-
-  //     await axios.post("http://localhost:5000/api/sqft", {
-  //       address,
-  //       sqFt,
-  //       mandatoryCoverages,
-  //       disasterCoverages
-  //     });
-
-  //     console.log("✅ Data sent to backend successfully");
-  //   } catch (err) {
-  //     console.error("❌ Backend send failed:", err.message);
-  //   }
-  // };
 
   const sendToBackend = async () => {
     try {
@@ -1598,55 +1554,45 @@ const QuickQuoteDisplay = () => {
       weatherData,
       disasterInfo,
       mandatoryCoverages,
-      selectedDisasterCoverages,
-      premium: calculatePremium()
+      selectedDisasterCoverages
     };
 
     navigate('/prequote', { state: quoteData });
   };
 
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-  };
-
   const CoverageItem = ({ coverage, isSelected, onAdd, onRemove, showAddButton = false, showRemoveButton = false, isMandatory = false }) => (
-    <div className={`flex items-center justify-between p-3 rounded-lg transition-colors group ${isDarkMode
-      ? 'bg-gray-800/50 border border-gray-600/30 hover:bg-gray-700/50'
-      : 'bg-blue-50/50 border border-blue-200/30 hover:bg-blue-100/50'
-      }`}>
+    <div className='flex items-center justify-between p-3 rounded-lg transition-colors group bg-gray-800/50 border border-gray-600/30 hover:bg-gray-700/50'>
       <div className="flex items-center space-x-3 flex-1">
         <div className="flex items-center space-x-2">
           {isMandatory ? (
-            <CheckCircle className={`w-5 h-5 ${isDarkMode ? 'text-green-400' : 'text-green-600'}`} />
+            <CheckCircle className='text-green-400' />
           ) : isSelected ? (
-            <CheckCircle className={`w-5 h-5 ${isDarkMode ? 'text-blue-400' : 'text-blue-600'}`} />
+            <CheckCircle className='w-5 h-5 text-blue-400' />
           ) : (
-            <Circle className={`w-5 h-5 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`} />
+            <Circle className='w-5 h-5 text-gray-500' />
           )}
-          <span className={`${isMandatory
-            ? (isDarkMode ? 'text-green-200' : 'text-green-700')
-            : isSelected
-              ? (isDarkMode ? 'text-blue-200' : 'text-blue-700')
-              : (isDarkMode ? 'text-gray-300' : 'text-gray-600')
-            } font-medium`}>
+          <span
+            className={`${isMandatory
+              ? 'text-green-200'
+              : isSelected
+                ? 'text-blue-200'
+                : 'text-gray-300'
+              } font-medium`}
+          >
             {coverage}
           </span>
+
         </div>
         <div className="relative">
           <Info
-            className={`w-4 h-4 cursor-help transition-colors ${isDarkMode ? 'text-gray-400 hover:text-blue-400' : 'text-gray-500 hover:text-blue-600'
-              }`}
+            className='w-4 h-4 cursor-help transition-colors text-gray-400 hover:text-blue-400'
             onMouseEnter={() => setHoveredCoverage(coverage)}
             onMouseLeave={() => setHoveredCoverage(null)}
           />
           {hoveredCoverage === coverage && (
-            <div className={`absolute bottom-full left-0 mb-2 w-64 p-3 rounded-lg shadow-xl z-50 ${isDarkMode
-              ? 'bg-gray-900 border border-gray-600 text-gray-200'
-              : 'bg-white border border-gray-300 shadow-lg text-gray-700'
-              }`}>
+            <div className="absolute bottom-full left-0 mb-2 w-64 p-3 rounded-lg shadow-xl z-50 bg-gray-900 border border-gray-600 text-gray-200">
               <p className="text-sm">{coverageDetails[coverage]}</p>
-              <div className={`absolute top-full left-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent ${isDarkMode ? 'border-t-gray-900' : 'border-t-white'
-                }`}></div>
+              <div className="absolute top-full left-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
             </div>
           )}
         </div>
@@ -1656,10 +1602,7 @@ const QuickQuoteDisplay = () => {
         {showAddButton && !isSelected && (
           <button
             onClick={() => onAdd(coverage)}
-            className={`p-1 rounded-full transition-colors ${isDarkMode
-              ? 'bg-green-600 hover:bg-green-700'
-              : 'bg-green-500 hover:bg-green-600'
-              }`}
+            className="p-1 rounded-full transition-colors bg-green-600 hover:bg-green-700"
           >
             <Plus className="w-4 h-4 text-white" />
           </button>
@@ -1667,10 +1610,7 @@ const QuickQuoteDisplay = () => {
         {showRemoveButton && isSelected && (
           <button
             onClick={() => onRemove(coverage)}
-            className={`p-1 rounded-full transition-colors ${isDarkMode
-              ? 'bg-red-600 hover:bg-red-700'
-              : 'bg-red-500 hover:bg-red-600'
-              }`}
+            className="p-1 rounded-full transition-colors bg-red-600 hover:bg-red-700"
           >
             <X className="w-4 h-4 text-white" />
           </button>
@@ -1680,212 +1620,133 @@ const QuickQuoteDisplay = () => {
   );
 
   return (
-    <div className={`min-h-screen px-6 py-10 transition-colors duration-300 ${isDarkMode
-      ? 'bg-gradient-to-br from-black via-gray-900 to-black text-white'
-      : 'bg-gradient-to-br from-blue-50 via-white to-purple-50 text-gray-900'
-      }`}>
-      {/* Theme Toggle Button */}
-      <div className="fixed top-6 right-6 z-50">
-        <button
-          onClick={toggleTheme}
-          className={`p-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-110 ${isDarkMode
-            ? 'bg-yellow-500 hover:bg-yellow-400 text-black'
-            : 'bg-gray-800 hover:bg-gray-700 text-white'
-            }`}
-        >
-          {isDarkMode ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
-        </button>
-      </div>
+    <div className="min-h-screen px-6 py-10 bg-gradient-to-br from-black via-gray-900 to-black text-white">
 
       <div className="max-w-6xl mx-auto space-y-12">
         <div>
-          <h1 className={`text-5xl font-bold mb-8 text-center ${isDarkMode
-            ? 'bg-gradient-to-r from-blue-400 via-purple-500 to-pink-400 text-transparent bg-clip-text'
-            : 'bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-transparent bg-clip-text'
-            }`}>
+          <h1 className='text-5xl font-bold mb-8 text-center bg-gradient-to-r from-blue-400 via-purple-500 to-pink-400 text-transparent bg-clip-text'>
             Home Insurance Tentative Quote
           </h1>
           <div className="grid md:grid-cols-2 gap-8 mb-8">
             <div className="group relative">
-              <div className={`absolute -inset-0.5 rounded-2xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${isDarkMode
-                ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20'
-                : 'bg-gradient-to-r from-blue-300/30 to-purple-300/30'
-                }`}></div>
-              <div className={`relative rounded-2xl p-6 backdrop-blur-sm shadow-xl hover:shadow-2xl transition-all duration-300 ${isDarkMode
-                ? 'bg-gradient-to-br from-gray-800/90 to-gray-900/90 border border-gray-600/50 hover:border-blue-400/50'
-                : 'bg-gradient-to-br from-white/90 to-blue-50/90 border border-blue-200/50 hover:border-blue-400/70'
-                }`}>
+              <div className="absolute -inset-0.5 rounded-2xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-blue-500/20 to-purple-500/20"></div>
+              <div className="relative rounded-2xl p-6 backdrop-blur-sm shadow-xl hover:shadow-2xl transition-all duration-300 bg-gradient-to-br from-gray-800/90 to-gray-900/90 border border-gray-600/50 hover:border-blue-400/50">
                 <div className="flex items-center mb-4">
-                  <div className={`p-2 rounded-xl mr-3 shadow-lg ${isDarkMode
-                    ? 'bg-gradient-to-r from-blue-500 to-blue-600'
-                    : 'bg-gradient-to-r from-blue-600 to-blue-700'
-                    }`}>
+                  <div className="p-2 rounded-xl mr-3 shadow-lg bg-gradient-to-r from-blue-500 to-blue-600">
                     <MapPin className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className={`text-xl font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Property Address</h3>
+                  <h3 className="text-xl font-semibold text-white">Property Address</h3>
                 </div>
-                <p className={`text-lg leading-relaxed pl-11 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>{form.address}</p>
+                <p className="text-lg leading-relaxed pl-11 text-gray-300">{form.address}</p>
               </div>
             </div>
-
             <div className="group relative">
-              <div className={`absolute -inset-0.5 rounded-2xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${isDarkMode
-                ? 'bg-gradient-to-r from-green-500/20 to-emerald-500/20'
-                : 'bg-gradient-to-r from-green-300/30 to-emerald-300/30'
-                }`}></div>
-              <div className={`relative rounded-2xl p-6 backdrop-blur-sm shadow-xl hover:shadow-2xl transition-all duration-300 ${isDarkMode
-                ? 'bg-gradient-to-br from-gray-800/90 to-gray-900/90 border border-gray-600/50 hover:border-green-400/50'
-                : 'bg-gradient-to-br from-white/90 to-green-50/90 border border-green-200/50 hover:border-green-400/70'
-                }`}>
+              <div className="absolute -inset-0.5 rounded-2xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-green-500/20 to-emerald-500/20"></div>
+              <div className="relative rounded-2xl p-6 backdrop-blur-sm shadow-xl hover:shadow-2xl transition-all duration-300 bg-gradient-to-br from-gray-800/90 to-gray-900/90 border border-gray-600/50 hover:border-green-400/50">
                 <div className="flex items-center mb-4">
-                  <div className={`p-2 rounded-xl mr-3 shadow-lg ${isDarkMode
-                    ? 'bg-gradient-to-r from-green-500 to-emerald-600'
-                    : 'bg-gradient-to-r from-green-600 to-emerald-700'
-                    }`}>
+                  <div className="p-2 rounded-xl mr-3 shadow-lg bg-gradient-to-r from-green-500 to-emerald-600">
                     <Home className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className={`text-xl font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Square Footage</h3>
+                  <h3 className="text-xl font-semibold text-white">Square Footage</h3>
                 </div>
-                <p className={`text-lg leading-relaxed pl-11 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>{Number(form.sqFt).toLocaleString()} sq ft</p>
+                <p className="text-lg leading-relaxed pl-11 text-gray-300">
+                  {Number(form.sqFt).toLocaleString()} sq ft
+                </p>
               </div>
             </div>
+
           </div>
         </div>
-
         <div className="group relative mb-8">
-          <div className={`absolute -inset-0.5 rounded-2xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${isDarkMode
-            ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20'
-            : 'bg-gradient-to-r from-cyan-300/30 to-blue-300/30'
-            }`}></div>
-          <div className={`relative rounded-2xl p-6 backdrop-blur-sm shadow-xl hover:shadow-2xl transition-all duration-300 ${isDarkMode
-            ? 'bg-gradient-to-br from-gray-800/90 to-gray-900/90 border border-cyan-500/30'
-            : 'bg-gradient-to-br from-white/90 to-cyan-50/90 border border-cyan-300/50'
-            }`}>
+          <div className="absolute -inset-0.5 rounded-2xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-cyan-500/20 to-blue-500/20"></div>
+          <div className="relative rounded-2xl p-6 backdrop-blur-sm shadow-xl hover:shadow-2xl transition-all duration-300 bg-gradient-to-br from-gray-800/90 to-gray-900/90 border border-cyan-500/30">
             <div className="flex items-center mb-4">
-              <div className={`p-2 rounded-xl mr-3 shadow-lg ${isDarkMode
-                ? 'bg-gradient-to-r from-cyan-500 to-blue-600'
-                : 'bg-gradient-to-r from-cyan-600 to-blue-700'
-                }`}>
+              <div className="p-2 rounded-xl mr-3 shadow-lg bg-gradient-to-r from-cyan-500 to-blue-600">
                 <Thermometer className="w-7 h-7 text-white" />
               </div>
-              <h2 className={`text-2xl font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Current Weather</h2>
+              <h2 className="text-2xl font-semibold text-white">Current Weather</h2>
             </div>
             <div className="pl-12">
-              <p className={`text-xl leading-relaxed ${isDarkMode ? 'text-gray-200' : 'text-gray-700'}`}>
-                <span className={`font-semibold ${isDarkMode ? 'text-cyan-300' : 'text-cyan-700'}`}>{weatherData.location.name}</span> —
-                <span className={`font-bold text-2xl mx-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{weatherData.current.temp_f}°F</span>
-                <span className={isDarkMode ? 'text-gray-300' : 'text-gray-600'}>{weatherData.current.condition.text}</span>
+              <p className="text-xl leading-relaxed text-gray-200">
+                <span className="font-semibold text-cyan-300">{weatherData.location.name}</span> —
+                <span className="font-bold text-2xl mx-2 text-white">{weatherData.current.temp_f}°F</span>
+                <span className="text-gray-300">{weatherData.current.condition.text}</span>
               </p>
             </div>
           </div>
         </div>
-
         <div className="group relative">
-          <div className={`absolute -inset-0.5 rounded-2xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${isDarkMode
-            ? 'bg-gradient-to-r from-red-500/20 to-orange-500/20'
-            : 'bg-gradient-to-r from-red-300/30 to-orange-300/30'
-            }`}></div>
-          <div className={`relative rounded-2xl p-6 backdrop-blur-sm shadow-xl hover:shadow-2xl transition-all duration-300 ${isDarkMode
-            ? 'bg-gradient-to-br from-red-900/20 via-gray-800/90 to-orange-900/20 border border-red-500/30'
-            : 'bg-gradient-to-br from-red-50/90 via-white/90 to-orange-50/90 border border-red-300/50'
-            }`}>
+          <div className="absolute -inset-0.5 rounded-2xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-red-500/20 to-orange-500/20"></div>
+          <div className="relative rounded-2xl p-6 backdrop-blur-sm shadow-xl hover:shadow-2xl transition-all duration-300 bg-gradient-to-br from-red-900/20 via-gray-800/90 to-orange-900/20 border border-red-500/30">
             <div className="flex items-center mb-6">
-              <div className={`p-2 rounded-xl mr-3 shadow-lg animate-pulse ${isDarkMode
-                ? 'bg-gradient-to-r from-red-500 to-orange-500'
-                : 'bg-gradient-to-r from-red-600 to-orange-600'
-                }`}>
+              <div className="p-2 rounded-xl mr-3 shadow-lg animate-pulse bg-gradient-to-r from-red-500 to-orange-500">
                 <AlertTriangle className="w-7 h-7 text-white" />
               </div>
-              <h2 className={`text-2xl font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Disaster History in {disasterInfo.stateName}</h2>
+              <h2 className="text-2xl font-semibold text-white">
+                Disaster History in {disasterInfo.stateName}
+              </h2>
             </div>
             <div className="pl-12">
               {uniqueDisasters.length > 0 ? (
                 <div className="space-y-3">
                   {uniqueDisasters.map((d, i) => (
-                    <div key={i} className={`flex items-start space-x-3 p-3 rounded-lg transition-colors ${isDarkMode
-                      ? 'bg-red-900/10 border border-red-500/20 hover:bg-red-900/20'
-                      : 'bg-red-50/50 border border-red-200/30 hover:bg-red-100/50'
-                      }`}>
-                      <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${isDarkMode
-                        ? 'bg-gradient-to-r from-red-400 to-orange-400'
-                        : 'bg-gradient-to-r from-red-500 to-orange-500'
-                        }`}></div>
+                    <div
+                      key={i}
+                      className="flex items-start space-x-3 p-3 rounded-lg transition-colors bg-red-900/10 border border-red-500/20 hover:bg-red-900/20"
+                    >
+                      <div className="w-2 h-2 rounded-full mt-2 flex-shrink-0 bg-gradient-to-r from-red-400 to-orange-400"></div>
                       <div className="flex-1">
-                        <span className={`text-lg leading-relaxed ${isDarkMode ? 'text-gray-200' : 'text-gray-700'}`}>
-                          <span className={`font-semibold ${isDarkMode ? 'text-red-300' : 'text-red-700'}`}>{d.declarationTitle || d.incidentType}</span>
-                          <span className={`mx-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>—</span>
-                          <span className={isDarkMode ? 'text-gray-300' : 'text-gray-600'}>{new Date(d.declarationDate).toLocaleDateString()}</span>
+                        <span className="text-lg leading-relaxed text-gray-200">
+                          <span className="font-semibold text-red-300">{d.declarationTitle || d.incidentType}</span>
+                          <span className="mx-2 text-gray-400">—</span>
+                          <span className="text-gray-300">
+                            {new Date(d.declarationDate).toLocaleDateString()}
+                          </span>
                         </span>
                       </div>
                     </div>
                   ))}
                 </div>
               ) : (
-                <div className={`flex items-center space-x-3 p-4 rounded-lg ${isDarkMode
-                  ? 'bg-green-900/20 border border-green-500/30'
-                  : 'bg-green-50/50 border border-green-300/30'
-                  }`}>
-                  <div className={`w-3 h-3 rounded-full animate-pulse ${isDarkMode ? 'bg-green-400' : 'bg-green-500'
-                    }`}></div>
-                  <p className={`font-semibold text-lg ${isDarkMode ? 'text-green-300' : 'text-green-700'}`}>No recent disaster declarations.</p>
+                <div className="flex items-center space-x-3 p-4 rounded-lg bg-green-900/20 border border-green-500/30">
+                  <div className="w-3 h-3 rounded-full animate-pulse bg-green-400"></div>
+                  <p className="font-semibold text-lg text-green-300">No recent disaster declarations.</p>
                 </div>
               )}
             </div>
           </div>
         </div>
-
         {/*Coverage Selection Section*/}
-        <div className={`rounded-3xl p-8 backdrop-blur-sm shadow-2xl ${isDarkMode
-          ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 border border-gray-600/50'
-          : 'bg-gradient-to-br from-white via-blue-50/50 to-purple-50/50 border border-blue-200/30'
-          }`}>
+        <div className="rounded-3xl p-8 backdrop-blur-sm shadow-2xl bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 border border-gray-600/50">
           <div className="text-center mb-10">
-            <h2 className={`text-4xl font-bold mb-3 ${isDarkMode
-              ? 'bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-transparent'
-              : 'bg-gradient-to-r from-gray-800 via-blue-800 to-purple-800 bg-clip-text text-transparent'
-              }`}>
+            <h2 className="text-4xl font-bold mb-3 bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-transparent">
               Customize Your Coverage
             </h2>
-            <div className={`w-24 h-1 mx-auto rounded-full ${isDarkMode
-              ? 'bg-gradient-to-r from-blue-500 to-purple-500'
-              : 'bg-gradient-to-r from-blue-600 to-purple-600'
-              }`}></div>
-            <p className={`text-sm mt-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-              Your selections are automatically saved
-            </p>
+            <div className="w-24 h-1 mx-auto rounded-full bg-gradient-to-r from-blue-500 to-purple-500"></div>
+            <p className="text-sm mt-2 text-gray-400">Your selections are automatically saved</p>
           </div>
-
           <div className="grid lg:grid-cols-2 gap-8 mb-8">
             {/* Selected Coverages */}
             <div className="space-y-6">
-              <div className={`rounded-2xl p-6 h-100 ${isDarkMode
-                ? 'bg-gradient-to-br from-green-900/20 to-gray-800/50 border border-green-500/30'
-                : 'bg-gradient-to-br from-green-50/80 to-white/80 border border-green-300/50'
-                }`}>
-                <h3 className={`text-2xl font-bold mb-4 flex items-center ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-                  <Shield className={`w-6 h-6 mr-3 ${isDarkMode ? 'text-green-400' : 'text-green-600'}`} />
+              <div className="rounded-2xl p-6 h-100 bg-gradient-to-br from-green-900/20 to-gray-800/50 border border-green-500/30">
+                <h3 className="text-2xl font-bold mb-4 flex items-center text-white">
+                  <Shield className="w-6 h-6 mr-3 text-green-400" />
                   Your Selected Coverage
                 </h3>
-
                 <div className="h-80 overflow-y-auto pr-2">
                   {/* Mandatory Coverages */}
                   <div className="mb-6">
-                    <h4 className={`text-lg font-semibold mb-3 ${isDarkMode ? 'text-green-300' : 'text-green-700'}`}>Mandatory Coverage (Included)</h4>
+                    <h4 className="text-lg font-semibold mb-3 text-green-300">Mandatory Coverage (Included)</h4>
                     <div className="space-y-2">
                       {mandatoryCoverages.map((coverage, idx) => (
-                        <CoverageItem
-                          key={idx}
-                          coverage={coverage}
-                          isMandatory={true}
-                        />
+                        <CoverageItem key={idx} coverage={coverage} isMandatory={true} />
                       ))}
                     </div>
                   </div>
-
                   {/* Selected Disaster Coverages */}
                   {selectedDisasterCoverages.length > 0 && (
                     <div>
-                      <h4 className={`text-lg font-semibold mb-3 ${isDarkMode ? 'text-blue-300' : 'text-blue-700'}`}>Additional Coverage</h4>
+                      <h4 className="text-lg font-semibold mb-3 text-blue-300">Additional Coverage</h4>
                       <div className="space-y-2">
                         {selectedDisasterCoverages.map((coverage, idx) => (
                           <CoverageItem
@@ -1902,17 +1763,13 @@ const QuickQuoteDisplay = () => {
                 </div>
               </div>
             </div>
-
             {/* Available Coverages */}
             <div className="space-y-6">
               {/* Disaster-Specific Coverages */}
               {disasterCoverages.length > 0 && (
-                <div className={`rounded-2xl p-6 h-100 ${isDarkMode
-                  ? 'bg-gradient-to-br from-orange-900/20 to-gray-800/50 border border-orange-500/30'
-                  : 'bg-gradient-to-br from-orange-50/80 to-white/80 border border-orange-300/50'
-                  }`}>
-                  <h3 className={`text-2xl font-bold mb-4 flex items-center ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-                    <AlertTriangle className={`w-6 h-6 mr-3 ${isDarkMode ? 'text-orange-400' : 'text-orange-600'}`} />
+                <div className="rounded-2xl p-6 h-100 bg-gradient-to-br from-orange-900/20 to-gray-800/50 border border-orange-500/30">
+                  <h3 className="text-2xl font-bold mb-4 flex items-center text-white">
+                    <AlertTriangle className="w-6 h-6 mr-3 text-orange-400" />
                     Recommended for Your Area
                   </h3>
                   <div className="h-80 pr-2">
@@ -1940,15 +1797,10 @@ const QuickQuoteDisplay = () => {
                 setLoadingQuote(true);
                 const success = await sendToBackend();
                 setLoadingQuote(false);
-                if (success) {
-                  setShowPremiumSection(true);
-                }
+                if (success) setShowPremiumSection(true);
               }}
               disabled={loadingQuote}
-              className={`px-8 py-3 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 ${loadingQuote ? 'opacity-60 cursor-not-allowed' :
-                isDarkMode
-                  ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:shadow-blue-500/30'
-                  : 'bg-gradient-to-r from-blue-400 to-purple-500 text-white hover:shadow-purple-400/30'
+              className={`px-8 py-3 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 ${loadingQuote ? 'opacity-60 cursor-not-allowed' : 'bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:shadow-blue-500/30'
                 } shadow-lg hover:shadow-xl flex items-center gap-2`}
             >
               {loadingQuote && (
@@ -1958,66 +1810,41 @@ const QuickQuoteDisplay = () => {
                   fill="none"
                   viewBox="0 0 24 24"
                 >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                  ></path>
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
                 </svg>
               )}
               {loadingQuote ? 'Fetching Quote...' : 'Get Quick Quote'}
             </button>
           </div>
-          {/* Premium Display - Full Width */}
           {showPremiumSection && (
             <>
-              <div
-                className={`rounded-2xl p-6 text-center mb-8 ${isDarkMode
-                  ? 'bg-gradient-to-br from-blue-900/20 to-gray-800/50 border border-blue-500/30'
-                  : 'bg-gradient-to-br from-blue-50/80 to-white/80 border border-blue-300/50'
-                  }`}>
-                <h3 className={`text-xl font-semibold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Monthly Premium</h3>
-                <div
-                  className={`text-5xl font-bold ${isDarkMode
-                    ? 'bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent'
-                    : 'bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent'
-                    }`}>
+              <div className="rounded-2xl p-6 text-center mb-8 bg-gradient-to-br from-blue-900/20 to-gray-800/50 border border-blue-500/30">
+                <h3 className="text-xl font-semibold mb-2 text-white">Monthly Premium</h3>
+                <div className="text-5xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                   {premiumFromBackend ? `$${premiumFromBackend}` : '...'}
                 </div>
-                <p className={`mt-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                <p className="mt-2 text-gray-400">
                   Based on {mandatoryCoverages.length + selectedDisasterCoverages.length} coverages
                 </p>
-
-                {/* === Premium Breakdown Section === */}
                 {premiumBreakdown && (
-                  <div
-                    className={`mt-6 text-left text-sm px-4 md:px-8 lg:px-16 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                  <div className="mt-6 text-left text-sm px-4 md:px-8 lg:px-16 text-gray-300">
                     <h4 className="text-lg font-semibold mb-2">Premium Breakdown</h4>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {/* Base Coverage Breakdown */}
                       {Object.entries(premiumBreakdown.base).map(([key, value]) => (
                         <div key={key} className="flex justify-between border-b pb-1">
                           <span>
                             {{
-                              CoverageA: 'Coverage A: Dwelling Protection',
-                              CoverageB: 'Coverage B: Other Structures',
-                              CoverageC: 'Coverage C: Personal Property',
-                              CoverageD: 'Coverage D: Loss of Use'
+                              CoverageA: 'Coverage A : Dwelling Protection',
+                              CoverageB: 'Coverage B : Other Structures',
+                              CoverageC: 'Coverage C : Personal Property',
+                              CoverageD: 'Coverage D : Loss of Use'
                             }[key] || key}
                           </span>
                           <span>${value.toFixed(2)}</span>
                         </div>
                       ))}
 
-                      {/* Disaster Coverage Breakdown */}
                       {premiumBreakdown.disasterCoverages &&
                         Object.entries(premiumBreakdown.disasterCoverages).map(([key, value]) => (
                           <div key={key} className="flex justify-between border-b pb-1">
@@ -2029,15 +1856,11 @@ const QuickQuoteDisplay = () => {
                   </div>
                 )}
               </div>
-
-              {/* Proceed Button */}
               <div className="flex justify-center">
                 <button
                   onClick={handleProceed}
-                  className={`group relative px-12 py-4 rounded-2xl font-bold text-xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl overflow-hidden ${isDarkMode
-                    ? 'bg-gradient-to-r from-purple-900 via-blue-900 to-purple-900 text-white hover:from-purple-800 hover:via-blue-800 hover:to-purple-800 hover:shadow-purple-500/25'
-                    : 'bg-gradient-to-r from-purple-100 via-purple-300 to-purple-100 text-purple-900 hover:from-purple-200 hover:via-purple-400 hover:to-purple-200 hover:shadow-purple-300/40'
-                    }`}>
+                  className="group relative px-12 py-4 rounded-2xl font-bold text-xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl overflow-hidden bg-gradient-to-r from-purple-900 via-blue-900 to-purple-900 text-white hover:from-purple-800 hover:via-blue-800 hover:to-purple-800 hover:shadow-purple-500/25"
+                >
                   Proceed with Quote
                 </button>
               </div>
