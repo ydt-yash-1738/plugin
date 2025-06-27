@@ -4,7 +4,7 @@ const steps = [
   { label: 'Property Details', path: '/quickquote' },
   { label: 'Tentative Quote', path: '/quickquotedisplay' },
   { label: 'Property Information', path: '/prequote' },
-  { label: 'Additional Coverages', path: '/coverages' },
+  { label: 'Additional Coverages', path: '/additionalcoverages' },
   { label: 'Quote Display', path: '/quotedisplay' },
   { label: 'Payment', path: '/payment' },
   { label: 'Thank You', path: '/thankyou' }
