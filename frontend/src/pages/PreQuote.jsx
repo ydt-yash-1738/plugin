@@ -3,15 +3,16 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 const PreQuote = () => {
     const [form, setForm] = useState({
-        propertyType: '',
         yearBuilt: '',
-        construction: '',
         stories: '',
+        framingSystem: '',
+        foundationType: '',
         roofType: '',
-        ownerOccupied: '',
+        occupancyType: '',
         securitySystem: '',
         estimatedValue: ''
     });
+
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -28,6 +29,22 @@ const PreQuote = () => {
             }
         }
     }, []);
+
+    useEffect(() => {
+        const storedData = localStorage.getItem('preQuoteData');
+        if (storedData) {
+            try {
+                const parsed = JSON.parse(storedData);
+                if (parsed.preQuoteData) {
+                    console.log("Preloading preQuoteData:", parsed.preQuoteData);
+                    setForm(parsed.preQuoteData);
+                }
+            } catch (err) {
+                console.error("Failed to parse preQuoteData:", err);
+            }
+        }
+    }, []);
+
 
     const isFormComplete = Object.values(form).every(val => val.trim() !== "");
 
@@ -86,24 +103,6 @@ const PreQuote = () => {
                         />
                     </div>
 
-                    {/* Construction Material */}
-                    <div>
-                        <label className="block mb-2 font-medium text-gray-300">Construction Material</label>
-                        <select
-                            name="construction"
-                            value={form.construction}
-                            onChange={handleChange}
-                            className="w-full bg-black border border-gray-700 p-3 rounded-lg text-white focus:outline-none focus:border-blue-500"
-                        >
-                            <option value="">Select...</option>
-                            <option value="Wood">Wood</option>
-                            <option value="Brick">Brick</option>
-                            <option value="Concrete">Concrete</option>
-                            <option value="Steel">Steel</option>
-                            <option value="Mixed">Mixed</option>
-                        </select>
-                    </div>
-
                     {/* Number of Stories */}
                     <div>
                         <label className="block mb-2 font-medium text-gray-300">Number of Stories</label>
@@ -117,9 +116,43 @@ const PreQuote = () => {
                         />
                     </div>
 
-                    {/* Roof Type */}
+                    {/* Primary Framing System */}
                     <div>
-                        <label className="block mb-2 font-medium text-gray-300">Roof Type</label>
+                        <label className="block mb-2 font-medium text-gray-300">Primary Framing System</label>
+                        <select
+                            name="framingSystem"
+                            value={form.framingSystem}
+                            onChange={handleChange}
+                            className="w-full bg-black border border-gray-700 p-3 rounded-lg text-white focus:outline-none focus:border-blue-500"
+                        >
+                            <option value="">Select...</option>
+                            <option value="Wood-Frame">Wood-Frame</option>
+                            <option value="Reinforced Concrete">Reinforced Concrete</option>
+                            <option value="Steel Moment Frame">Steel Moment Frame</option>
+                            <option value="Masonry">Masonry</option>
+                        </select>
+                    </div>
+
+                    {/* Foundation Type */}
+                    <div>
+                        <label className="block mb-2 font-medium text-gray-300">Foundation Type</label>
+                        <select
+                            name="foundationType"
+                            value={form.foundationType}
+                            onChange={handleChange}
+                            className="w-full bg-black border border-gray-700 p-3 rounded-lg text-white focus:outline-none focus:border-blue-500"
+                        >
+                            <option value="">Select...</option>
+                            <option value="Slab">Slab</option>
+                            <option value="Crawlspace">Crawlspace</option>
+                            <option value="Pier & Beam">Pier & Beam</option>
+                            <option value="Basement">Basement</option>
+                        </select>
+                    </div>
+
+                    {/* Roof Type/Material */}
+                    <div>
+                        <label className="block mb-2 font-medium text-gray-300">Roof Type / Material</label>
                         <select
                             name="roofType"
                             value={form.roofType}
@@ -127,27 +160,30 @@ const PreQuote = () => {
                             className="w-full bg-black border border-gray-700 p-3 rounded-lg text-white focus:outline-none focus:border-blue-500"
                         >
                             <option value="">Select...</option>
-                            <option value="Asphalt Shingle">Asphalt Shingle</option>
-                            <option value="Metal">Metal</option>
+                            <option value="Asphalt Shingles">Asphalt Shingles</option>
                             <option value="Tile">Tile</option>
-                            <option value="Slate">Slate</option>
+                            <option value="Metal">Metal</option>
+                            <option value="Flat Membrane">Flat Membrane</option>
                         </select>
                     </div>
 
-                    {/* Owner Occupied */}
+                    {/* Occupancy Type */}
                     <div>
-                        <label className="block mb-2 font-medium text-gray-300">Is the property owner-occupied?</label>
+                        <label className="block mb-2 font-medium text-gray-300">Occupancy Type</label>
                         <select
-                            name="ownerOccupied"
-                            value={form.ownerOccupied}
+                            name="occupancyType"
+                            value={form.occupancyType}
                             onChange={handleChange}
                             className="w-full bg-black border border-gray-700 p-3 rounded-lg text-white focus:outline-none focus:border-blue-500"
                         >
                             <option value="">Select...</option>
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
+                            <option value="Primary Residence">Primary Residence</option>
+                            <option value="Rental">Rental</option>
+                            <option value="Vacant">Vacant</option>
+                            <option value="Commercial">Commercial</option>
                         </select>
                     </div>
+
 
                     {/* Security System */}
                     <div>

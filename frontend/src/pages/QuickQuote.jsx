@@ -97,13 +97,6 @@ const QuickQuote = () => {
 
             // Store the quote data in localStorage
             localStorage.setItem('quickQuoteData', JSON.stringify(quickQuoteData));
-            // sending sqft to spreadsheet
-            // await fetch('http://localhost:5000/api/sqft', {
-            //     method: 'POST',
-            //     headers: { 'Content-Type': 'application/json' },
-            //     body: JSON.stringify({ sqFt: form.sqFt, address: form.address }),
-            // });
-
 
             navigate('/quickquotedisplay', {
                 state: {
@@ -126,7 +119,7 @@ const QuickQuote = () => {
                 <div className="absolute bottom-1/4 left-1/2 w-96 h-96 bg-gray-700 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-2000"></div>
             </div>
 
-            <div className="relative z-10 backdrop-blur-xl bg-black/40 border border-gray-800 rounded-2xl p-8 w-full max-w-md mx-2 shadow-2xl">
+            <div className="relative z-10 -mt-40 backdrop-blur-xl bg-black/40 border border-gray-800 rounded-2xl p-8 w-full max-w-md mx-2 shadow-2xl">
                 <h1 className="text-2xl font-bold mb-6 text-white">Quick Home Insurance Quote</h1>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
