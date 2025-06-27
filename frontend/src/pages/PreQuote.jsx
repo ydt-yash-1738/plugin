@@ -57,7 +57,7 @@ const PreQuote = () => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        navigate('/quotedisplay', {
+        navigate('/additionalcoverages', {
             state: {
                 ...location.state, // includes form, weatherData, disasterInfo, selectedPlan, premium
                 preQuoteForm: form

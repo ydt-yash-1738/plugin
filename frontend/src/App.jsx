@@ -37,8 +37,9 @@ import Login from './pages/Login';
 import QuickQuote from './pages/QuickQuote';
 import QuickQuoteDisplay from './pages/QuickQuoteDisplay';
 import PreQuote from './pages/PreQuote';
-import QuoteDisplay from './pages/QuoteDisplay';
+//import QuoteDisplay from './pages/QuoteDisplay';
 import AppLayout from './layouts/AppLayout';
+import AdditionalCoverages from './pages/AdditionalCoverages';
 
 const App = () => (
   <AuthProvider>
@@ -54,7 +55,7 @@ const App = () => (
           <Route path="/quickquote" element={<QuickQuote />} />
           <Route path="/quickquotedisplay" element={<QuickQuoteDisplay />} />
           <Route path="/prequote" element={<PreQuote />} />
-          <Route path="/quotedisplay" element={<QuoteDisplay />} />
+          <Route path="/additionalcoverages" element={<AdditionalCoverages />} />
         </Route>
       </Routes>
     </BrowserRouter>
