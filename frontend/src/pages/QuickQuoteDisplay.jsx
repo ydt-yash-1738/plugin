@@ -875,7 +875,7 @@ const QuickQuoteDisplay = () => {
       selectedDisasterCoverages
     };
 
-    navigate('/prequote', { state: quoteData });
+    navigate('/coveragelimits', { state: quoteData });
   };
 
   const CoverageItem = ({ coverage, isSelected, onAdd, onRemove, showAddButton = false, showRemoveButton = false, isMandatory = false }) => (

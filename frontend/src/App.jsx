@@ -37,9 +37,10 @@ import Login from './pages/Login';
 import QuickQuote from './pages/QuickQuote';
 import QuickQuoteDisplay from './pages/QuickQuoteDisplay';
 import PreQuote from './pages/PreQuote';
-//import QuoteDisplay from './pages/QuoteDisplay';
+import QuoteDisplay from './pages/QuoteDisplay';
 import AppLayout from './layouts/AppLayout';
 import AdditionalCoverages from './pages/AdditionalCoverages';
+import CoverageLimits from './pages/CoverageLimits';
 
 const App = () => (
   <AuthProvider>
@@ -53,9 +54,11 @@ const App = () => (
         {/* Wrap private routes in AppLayout to show ProgressBar */}
         <Route element={<PrivateRoute><AppLayout /></PrivateRoute>}>
           <Route path="/quickquote" element={<QuickQuote />} />
-          <Route path="/quickquotedisplay" element={<QuickQuoteDisplay />} />
           <Route path="/prequote" element={<PreQuote />} />
+          <Route path="/quickquotedisplay" element={<QuickQuoteDisplay />} />
+          <Route path="/coveragelimits" element={<CoverageLimits />} />
           <Route path="/additionalcoverages" element={<AdditionalCoverages />} />
+          <Route path="/quotedisplay" element={<QuoteDisplay />} />
         </Route>
       </Routes>
     </BrowserRouter>

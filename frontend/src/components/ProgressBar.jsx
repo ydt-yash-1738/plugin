@@ -2,8 +2,9 @@ import { useLocation } from 'react-router-dom';
 
 const steps = [
   { label: 'Property Details', path: '/quickquote' },
-  { label: 'Tentative Quote', path: '/quickquotedisplay' },
   { label: 'Property Information', path: '/prequote' },
+  { label: 'Tentative Quote', path: '/quickquotedisplay' },
+  { label: 'Coverage Limits', path: '/coveragelimits' },
   { label: 'Additional Coverages', path: '/additionalcoverages' },
   { label: 'Quote Display', path: '/quotedisplay' },
   { label: 'Payment', path: '/payment' },

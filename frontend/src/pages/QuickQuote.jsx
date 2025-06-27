@@ -161,7 +161,7 @@
 
 // export default QuickQuote;
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const QuickQuote = () => {
@@ -185,6 +185,20 @@ const QuickQuote = () => {
         lastName: storedUser.lastName || '',
         email: storedUser.email || ''
     };
+
+    useEffect(() => {
+        const stored = localStorage.getItem('quickQuoteData');
+        if (stored) {
+            try {
+                const data = JSON.parse(stored);
+                if (data?.form) {
+                    setForm(data.form);
+                }
+            } catch (err) {
+                console.error("Error parsing stored form data:", err);
+            }
+        }
+    }, []);
 
     const generateQuoteRef = () => {
         const timestamp = Date.now();
@@ -260,9 +274,28 @@ const QuickQuote = () => {
                 createdAt: new Date().toISOString(),
             };
 
-            localStorage.setItem('quickQuoteData', JSON.stringify(quickQuoteData));
+            localStorage.setItem('quickQuoteData', JSON.stringify({
+                quoteRef,
+                address,
+                form,
+                sqFt: form.sqFt,
+                firstName: userData.firstName,
+                lastName: userData.lastName,
+                email: userData.email,
+                weatherData: weather,
+                disasterInfo: disasters,
+                createdAt: new Date().toISOString(),
+            }));
 
-            navigate('/quickquotedisplay', {
+            // navigate('/quickquotedisplay', {
+            //     state: {
+            //         form: { ...form, address },
+            //         weatherData: weather,
+            //         disasterInfo: disasters,
+            //         quoteRef
+            //     }
+            // });
+            navigate('/prequote', {
                 state: {
                     form: { ...form, address },
                     weatherData: weather,
@@ -303,7 +336,7 @@ const QuickQuote = () => {
                             className="w-full p-3 rounded-md bg-zinc-800 text-white"
                             required
                         />
-                    </div>     
+                    </div>
                     <div>
                         <label className="block mb-1">State</label>
                         <input
@@ -358,7 +391,8 @@ const QuickQuote = () => {
                             className="w-full bg-blue-500 hover:bg-blue-600 py-3 rounded-lg font-semibold transition"
                             disabled={loading}
                         >
-                            {loading ? 'Fetching...' : 'Get Quick Quote'}
+                            {/* {loading ? 'Fetching...' : 'Get Quick Quote'} */}
+                            {loading ? 'Saving...' : 'Proceed'}
                         </button>
                     </div>
                 </form>
