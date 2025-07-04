@@ -5,6 +5,8 @@ const cors = require('cors');
 const authRoutes = require('../routes/auth.js');
 const weatherRoutes = require('../routes/weatherRouter.js')
 const sqFtRoutes = require('../routes/sqFt.js')
+const addressValidator = require('../routes/locationValidator.js')
+const botRoutes = require('../routes/bot.js');
 
 const app = express();
 app.use(cors());
@@ -20,6 +22,8 @@ mongoose.connect(process.env.MONGO_URI, {
 app.use('/api/auth', authRoutes);
 app.use('/weather', weatherRoutes);
 app.use('/api/sqft', sqFtRoutes);
+app.use('/api/locationverify', addressValidator);
+app.use('/api/bot', botRoutes);
 
 app.listen(5000, () => console.log('Server running on http://localhost:5000'));
 
